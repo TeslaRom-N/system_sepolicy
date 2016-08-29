@@ -288,27 +288,3 @@ unix_socket_connect(init, vold, vold)
 
 # Raw writes to misc block device
 allow init misc_block_device:blk_file w_file_perms;
-
-###
-### neverallow rules
-###
-
-# The init domain is only entered via setcon from the kernel domain,
-# never via an exec-based transition.
-neverallow domain init:process dyntransition;
-neverallow { domain -kernel} init:process transition;
-neverallow init { file_type fs_type -init_exec }:file entrypoint;
-
-# Never read/follow symlinks created by shell or untrusted apps.
-neverallow init shell_data_file:lnk_file read;
-neverallow init app_data_file:lnk_file read;
-
-# init should never execute a program without changing to another domain.
-neverallow init { file_type fs_type }:file execute_no_trans;
-
-# Init never adds or uses services via service_manager.
-neverallow init service_manager_type:service_manager { add find };
-neverallow init servicemanager:service_manager list;
-
-# Init should not be creating subdirectories in /data/local/tmp
-neverallow init shell_data_file:dir { write add_name remove_name };

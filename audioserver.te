@@ -42,14 +42,3 @@ allow audioserver audio_data_file:file create_file_perms;
 # Needed on some devices for playing audio on paired BT device,
 # but seems appropriate for all devices.
 unix_socket_connect(audioserver, bluetooth, bluetooth)
-
-###
-### neverallow rules
-###
-
-# audioserver should never execute any executable without a
-# domain transition
-neverallow audioserver { file_type fs_type }:file execute_no_trans;
-
-# audioserver should never need network access. Disallow network sockets.
-neverallow audioserver domain:{ tcp_socket udp_socket rawip_socket } *;

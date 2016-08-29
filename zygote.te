@@ -106,20 +106,3 @@ allow zygote dalvikcache_data_file:{ dir file lnk_file } relabelto;
 allow zygote ota_data_file:dir rmdir;
 allow zygote ota_data_file:{ file lnk_file } unlink;
 
-###
-### neverallow rules
-###
-
-# Ensure that all types assigned to app processes are included
-# in the appdomain attribute, so that all allow and neverallow rules
-# written on appdomain are applied to all app processes.
-# This is achieved by ensuring that it is impossible for zygote to
-# setcon (dyntransition) to any types other than those associated
-# with appdomain plus system_server.
-neverallow zygote ~{ appdomain autoplay_app system_server }:process dyntransition;
-
-# Zygote should never execute anything from /data except for /data/dalvik-cache files.
-neverallow zygote {
-  data_file_type
-  -dalvikcache_data_file # map PROT_EXEC
-}:file no_x_file_perms;

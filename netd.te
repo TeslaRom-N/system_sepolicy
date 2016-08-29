@@ -76,25 +76,3 @@ allow netd dns_listener_service:service_manager find;
 allow netd netdomain:{tcp_socket udp_socket rawip_socket dccp_socket tun_socket} {read write getattr setattr getopt setopt};
 allow netd netdomain:fd use;
 
-
-###
-### Neverallow rules
-###
-### netd should NEVER do any of this
-
-# Block device access.
-neverallow netd dev_type:blk_file { read write };
-
-# ptrace any other app
-neverallow netd { domain }:process ptrace;
-
-# Write to /system.
-neverallow netd system_file:dir_file_class_set write;
-
-# Write to files in /data/data or system files on /data
-neverallow netd { app_data_file system_data_file }:dir_file_class_set write;
-
-# only system_server and dumpstate may interact with netd over binder
-neverallow { domain -system_server -dumpstate } netd_service:service_manager find;
-neverallow { domain -system_server -dumpstate } netd:binder call;
-neverallow netd { domain -system_server -servicemanager userdebug_or_eng(`-su') }:binder call;
