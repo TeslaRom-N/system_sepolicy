@@ -371,16 +371,6 @@ neverallow {
 # Only servicemanager should be able to register with binder as the context manager
 neverallow { domain -servicemanager } *:binder set_context_mgr;
 
-# Only authorized processes should be writing to files in /data/dalvik-cache
-neverallow {
-  domain
-  -init # TODO: limit init to relabelfrom for files
-  -zygote
-  -installd
-  -postinstall_dexopt
-  -dex2oat
-} dalvikcache_data_file:file no_w_file_perms;
-
 neverallow {
   domain
   -init
