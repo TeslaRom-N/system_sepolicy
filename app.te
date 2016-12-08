@@ -267,18 +267,3 @@ allow appdomain adbd:fd use;
 allow appdomain adbd:unix_stream_socket { getattr getopt ioctl read write shutdown };
 
 allow appdomain cache_file:dir getattr;
-
-# Blacklist app domains not allowed to execute from /data
-neverallow {
-  bluetooth
-  isolated_app
-  nfc
-  radio
-  shared_relro
-  system_app
-} {
-  data_file_type
-  -dalvikcache_data_file
-  -system_data_file # shared libs in apks
-  -apk_data_file
-}:file no_x_file_perms;
