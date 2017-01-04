@@ -273,3 +273,7 @@ allow appdomain adbd:fd use;
 allow appdomain adbd:unix_stream_socket { getattr getopt ioctl read write shutdown };
 
 allow appdomain cache_file:dir getattr;
+
+# Themed resources (i.e. composed icons)
+allow appdomain theme_data_file:dir r_dir_perms;
+allow appdomain theme_data_file:file r_file_perms;
