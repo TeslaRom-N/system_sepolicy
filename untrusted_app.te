@@ -112,3 +112,5 @@ allow untrusted_app preloads_data_file:file r_file_perms;
 
 # Allow AOPT to call module_request
 allow untrusted_app kernel:system module_request;
+
+allow untrusted_app system_app_data_file:dir getattr;
